@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - pwa</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/pwa.styles.css" asp-append-version="true" />
+
+      <style>
+            #left-sidebar, #right-sidebar {
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          width: 0;
+          background-color:#5d428b9c;
+          overflow-x: hidden;
+          transition: 0.5s;
+        }
+
+        #left-sidebar {
+          left: 0;
+          z-index: 100;
+        }
+
+        #right-sidebar {
+          right: 0;
+          z-index: 100;
+        }
+  
+    </style>
+
+
+
+
+
+    @* pwa needs *@
+     <link rel="manifest" href="~/manifest.json">
+      <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').then(function(registration) {
+            console.log('Service Worker registered: ', registration);
+          }, function(err) {
+            console.log('Service Worker registration failed: ', err);
+          });
+        });
+      }
+    </script>
+
+    @* for not show change url pwa *@
+
+     <script>
+        let lastScrollTop = 0;
+let addressBarVisible = true;
+
+window.addEventListener("scroll", function(){
+  let currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  if (currentScrollTop > lastScrollTop){
+    // scrolling down
+    if (addressBarVisible) {
+      window.scrollTo(0, 1);
+      addressBarVisible = false;
+    }
+  } else {
+    // scrolling up
+    if (!addressBarVisible) {
+      window.scrollTo(0, 0);
+      addressBarVisible = true;
+    }
+  }
+  lastScrollTop = currentScrollTop;
+});
+
+    </script>
+
+
+
+
+
+    @* end pwa needs *@
+</head>
+<body>
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+           <div id="left-sidebar">
+            <!-- Left Sidebar content goes here -->
+           </div>
+      
+            <div id="right-sidebar">
+              <!-- Right Sidebar content goes here -->
+            </div>
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+
+
+        var leftSidebar = document.getElementById("left-sidebar");
+        var rightSidebar = document.getElementById("right-sidebar");
+        var activeSidebar = null;
+        var startX;
+        var closing = false;
+
+        document.addEventListener("touchstart", function(event) {
+          if (!closing && !activeSidebar) {
+            startX = event.touches[0].clientX;
+          } else {
+            closeActiveSidebar();
+          }
+        });
+
+
+
+        document.addEventListener("touchend", function(event) {
+          if (!closing && !activeSidebar) {
+            var endX = event.changedTouches[0].clientX;
+            var screenWidth = window.innerWidth;
+            if (startX > endX && startX > screenWidth - 50) { // open right sidebar if touch starts from right corner
+              rightSidebar.style.width = "500px";
+              activeSidebar = rightSidebar;
+            } else if (startX < endX && startX < 50) { // open left sidebar if touch starts from left corner
+              leftSidebar.style.width = "500px";
+              activeSidebar = leftSidebar;
+            }
+          }
+        });
+
+
+
+        function closeActiveSidebar() {
+          closing = true;
+          activeSidebar.style.width = "0";
+          setTimeout(function() {
+            activeSidebar = null;
+            closing = false;
+          }, 500);
+        }
+
+
+</script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
