@@ -4,6 +4,7 @@ using hardware.Models;
 using MongoDB.Driver;
 using System.IO.Ports;
 using Microsoft.AspNetCore.SignalR;
+using MongoDB.Bson;
 
 namespace hardware.Controllers;
 
@@ -11,7 +12,6 @@ namespace hardware.Controllers;
 public class HomeController : Controller
 {
     private readonly IHubContext<DataHub> _hubContext;
-      private readonly IHubContext<DataHub1> _hubContext1;
 
 
     public HomeController(IHubContext<DataHub> hubContext)
@@ -156,8 +156,10 @@ public class HomeController : Controller
                 {
                     if (documents.Count < pageSize * 1)
                     {
-                           await _hubContext.Clients.All.SendAsync("ReceiveData", document.chart.ToString(), document.pulse.ToString(), document.spo.ToString(),document.Datetime.ToString());
+                         //  await _hubContext.Clients.All.SendAsync("ReceiveData", document.chart.ToString(), document.pulse.ToString(), document.spo.ToString(),document.Datetime.ToString());
                           //sleep
+                          await _hubContext.Clients.All.SendAsync("ReceiveData", document.chart.ToString(), document.pulse.ToString(), document.spo.ToString(), document.Id, document.chart, document.pulse, document.spo, document.Datetime.ToString());
+
                             await Task.Delay(10);
                     }
                     else
@@ -171,6 +173,48 @@ public class HomeController : Controller
        
 
     }
+
+    // GetDataWithMouseMovement Action
+public async Task GetDataWithMouseMovement(dynamic data)
+{
+    int xMovement = data.x;
+    int yMovement = data.y;
+
+    // do something with xMovement and yMovement
+
+    // example: update the MongoDB document with new values
+    var mongoClient = new MongoClient("mongodb://localhost:27017");
+    var database = mongoClient.GetDatabase("hardware");
+    var collection = database.GetCollection<mongodb>("info");
+
+    var filter = Builders<mongodb>.Filter.Eq("_id", ObjectId.Parse("document_id_here"));
+    var update = Builders<mongodb>.Update.Set("chart", xMovement).Set("pulse", yMovement);
+    await collection.UpdateOneAsync(filter, update);
+}
+
+// ReceiveDataAfterMouseMovement Action
+public async Task ReceiveDataAfterMouseMovement(string data)
+{
+    float parsedData = float.Parse(data);
+
+    // do something with parsedData
+
+    // example: insert new document to MongoDB
+    var mongoClient = new MongoClient("mongodb://localhost:27017");
+    var database = mongoClient.GetDatabase("hardware");
+    var collection = database.GetCollection<mongodb>("info");
+
+    var document = new mongodb
+    {
+        chart = 1,
+        pulse = 2,
+        spo = 3,
+        Datetime = DateTime.Now
+    };
+
+    await collection.InsertOneAsync(document);
+}
+
 
 
  

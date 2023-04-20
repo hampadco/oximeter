@@ -21,6 +21,10 @@
       "PackagePath": "staticwebassets\\js\\Chart.min.js"
     },
     {
+      "Id": "C:\\Users\\lenovo\\Desktop\\hardware\\wwwroot\\js\\chartjs-plugin-zoom.js",
+      "PackagePath": "staticwebassets\\js\\chartjs-plugin-zoom.js"
+    },
+    {
       "Id": "C:\\Users\\lenovo\\Desktop\\hardware\\wwwroot\\js\\jquery-3.6.0.min.js",
       "PackagePath": "staticwebassets\\js\\jquery-3.6.0.min.js"
     },

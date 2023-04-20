@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yjaEBJ33ijavd7NnI1OyzUAzIpyh5Yb0RggW0blboa4=",
+  "Hash": "IfnXzRGX6OPLGR4tmMTNjPNOtXJPhfeF6kcGYTC65rI=",
   "Source": "hardware",
   "BasePath": "_content/hardware",
   "Mode": "Default",
@@ -117,6 +117,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\Chart.min.js"
+    },
+    {
+      "Identity": "C:\\Users\\lenovo\\Desktop\\hardware\\wwwroot\\js\\chartjs-plugin-zoom.js",
+      "SourceId": "hardware",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\lenovo\\Desktop\\hardware\\wwwroot\\",
+      "BasePath": "_content/hardware",
+      "RelativePath": "js/chartjs-plugin-zoom.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\chartjs-plugin-zoom.js"
     },
     {
       "Identity": "C:\\Users\\lenovo\\Desktop\\hardware\\wwwroot\\js\\jquery-3.6.0.min.js",

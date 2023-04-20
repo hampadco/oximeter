@@ -3,6 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
+builder.Services.AddMvc().AddRazorRuntimeCompilation();
 
 
 var app = builder.Build();
@@ -28,7 +29,5 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
     endpoints.MapHub<DataHub>("/dataHub");
-    //dataHub1
-    endpoints.MapHub<DataHub1>("/dataHub1");
 });
 app.Run();

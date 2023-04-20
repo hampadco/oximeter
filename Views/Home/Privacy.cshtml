@@ -1,30 +1,24 @@
-﻿
-<script src="~/js/Chart.min.js"></script>
-<script src="~/js/jquery-3.6.0.min.js"></script>
-<script src="~/js/signalr.min.js"></script>
-
-<div class="row p-3" >
-
+﻿<!-- HTML code -->
+<div class="row p-3">
   <div class="col-6 text-center">
-
     <p class="text-center alert alert-success" id="puls">--</p>
-
   </div>
-
   <div class="col-6 text-center">
-
     <p class="text-center alert alert-warning" id="so">--</p>
-
   </div>
-
 </div>
 <div style="max-height: 1024px;overflow-y: scroll;padding: 5px;">
   <canvas id="serial-port-data-chart" style="margin-top:5px"></canvas>
 </div>
 
+<script src="~/js/Chart.min.js"></script>
+<script src="~/js/jquery-3.6.0.min.js"></script>
+<script src="~/js/signalr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
+
 <script>
   var ctx = document.getElementById("serial-port-data-chart").getContext("2d");
-  var dataPointLimit = 150; // number of data points to display on the chart
+  var dataPointLimit = 150;
 
   var chart = new Chart(ctx, {
     type: "line",
@@ -34,30 +28,47 @@
         label: "Serial Port Data Read and write",
         data: [],
         borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)"
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        id: [],
+        chart: [],
+        pulse: [],
+        spo: [],
+        datetime: []
       }]
     },
     options: {
       scales: {
+        xAxes: [{
+          type: "time",
+          distribution: "linear",
+          ticks: {
+            source: "data",
+            autoSkip: true,
+            maxTicksLimit: 10
+          },
+          time: {
+            unit: "minute"
+          },
+          bounds: 'ticks',
+          gridLines: {
+            display: false
+          }
+        }],
         yAxes: [{
           ticks: {
             beginAtZero: true
           }
         }]
       },
-      // Add the following code to enable chart zooming and panning
-      pan: {
-        enabled: true,
-        mode: "x",
-        speed: 10,
-        threshold: 10
-      },
-      zoom: {
-        enabled: true,
-        mode: "xy",
-        limits: {
-          max: 10,
-          min: 0.5
+      plugins: {
+        zoom: {
+          enabled: true,
+          drag: false,
+          mode: "x"
+        },
+        pan: {
+          enabled: true,
+          mode: "x"
         }
       }
     }
@@ -65,20 +76,28 @@
 
   var connection = new signalR.HubConnectionBuilder().withUrl("/dataHub").build();
 
-  connection.on("ReceiveData", function (data, data1, data2) {
+  connection.on("ReceiveData", function (data, data1, data2, id, chartVal, pulseVal, spoVal, datetime) {
     if (data.trim() !== "") {
       var parsedData = parseFloat(data);
-       document.getElementById('puls').innerText=(data1);
-     document.getElementById('so').innerText=(data2);
+      document.getElementById('puls').innerText=(data1);
+      document.getElementById('so').innerText=(data2);
 
-
-      chart.data.labels.push("");
+      chart.data.labels.push(datetime);
       chart.data.datasets[0].data.push(parsedData);
+      chart.data.datasets[0].id.push(id);
+      chart.data.datasets[0].chart.push(chartVal);
+      chart.data.datasets[0].pulse.push(pulseVal);
+      chart.data.datasets[0].spo.push(spoVal);
+      chart.data.datasets[0].datetime.push(datetime);
 
-      // Check if the number of data points is greater than the limit
       if (chart.data.datasets[0].data.length > dataPointLimit) {
         chart.data.labels.shift();
         chart.data.datasets[0].data.shift();
+        chart.data.datasets[0].id.shift();
+        chart.data.datasets[0].chart.shift();
+        chart.data.datasets[0].pulse.shift();
+        chart.data.datasets[0].spo.shift();
+        chart.data.datasets[0].datetime.shift();
       }
 
       chart.update();
@@ -86,10 +105,6 @@
   });
 
   connection.start().then(function () {
-    // $.post("/Home/StartReading");
     $.post("/Home/Getdata");
   });
-
 </script>
-
-
