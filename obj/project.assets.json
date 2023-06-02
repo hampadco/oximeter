@@ -3620,24 +3620,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lenovo\\.nuget\\packages\\": {}
+    "C:\\Users\\Apple\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\lenovo\\Desktop\\hardware\\hardware.csproj",
+      "projectUniqueName": "c:\\Users\\Apple\\Desktop\\oximeter\\oximeter\\hardware.csproj",
       "projectName": "hardware",
-      "projectPath": "c:\\Users\\lenovo\\Desktop\\hardware\\hardware.csproj",
-      "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\lenovo\\Desktop\\hardware\\obj\\",
+      "projectPath": "c:\\Users\\Apple\\Desktop\\oximeter\\oximeter\\hardware.csproj",
+      "packagesPath": "C:\\Users\\Apple\\.nuget\\packages\\",
+      "outputPath": "c:\\Users\\Apple\\Desktop\\oximeter\\oximeter\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Apple\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3696,7 +3697,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

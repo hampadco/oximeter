@@ -1,4 +1,15 @@
 ﻿ <style>
+
+  .test{
+        margin-top: 22px !important;
+    display: block !important;;
+    height: 160px !important;;
+    width: 330px !important;;
+    padding-left: 50px !important;;
+  }
+
+
+
       video {
         width: 100%;
         height: auto;
@@ -62,42 +73,47 @@
 <script src="~/js/Chart.min.js"></script>
 <script src="~/js/jquery-3.6.0.min.js"></script>
 <script src="~/js/signalr.min.js"></script>
+ <span class="" style="position: fixed;z-index: 99;padding-left: 90px;font-weight: bold ;top: 50px;color: red;left;font-weight: bolder;font-size: 120px;" ><span id="puls1">0</span></span>
+ <span class="" style="position: fixed;z-index: 99;padding-left:280px;font-weight: bold ;top: 105px;color: red;left;font-weight: bolder;font-size: 120px;" ><img id="w"      src="/img/wind.png" alt="" style="width: 35px"></span>
 
-<div style="max-height: 1024px;overflow-y: scroll;padding: 5px;">
 
 
-<div class="row p-3" >
 
-  <div class="col-6 text-center">
 
-    <p class="text-center alert alert-success" id="puls">--</p>
+  <span class="" style="position: fixed;z-index: 99;padding-left: 90px;font-weight: bold ;top: 230px;color: rgb(0, 255, 60);left;font-weight: bolder;font-size: 120px;" ><span id="so1">0</span></span>
 
-  </div>
 
-  <div class="col-6 text-center">
+<div style="max-height: 500px;overflow-y: scroll;padding: 5px;margin-top: 350px;">
 
-    <p class="text-center alert alert-warning" id="so">--</p>
 
-  </div>
+<div class="row " style="margin:40px" >
 
-</div>
-
-<canvas id="serial-port-data-chart" style="margin-top:5px"></canvas>
-
-<div class="text-center">
-  <button id="startBtn" class="btn btn-success">Start Connection</button>
-  <button id="stopBtn" class="btn btn-danger">Stop Connection</button>
+ 
 
 </div>
+ <span class="" style="position: fixed;z-index: 99;padding-left: 90px;font-weight: bold ;margin-top: 10px;color: red;" >Pulse : <span id="puls">--</span></span>
+ <span class="" style="position: fixed;z-index: 99;padding-left: 90px;font-weight: bold ;margin-top: 10px;cplor:green;    margin-left: 150px" >So : <span id="so">--</span></span>
+ <span id="startBtn" style="position: fixed;z-index: 99;margin-top: 8px;margin-left: 333px"  >  <img id="g"     src="/img/heart.png" alt="" style="width: 40px"> </span>
+
+<span id="startBtn" style="position: fixed;z-index: 99;margin-top: 100px;margin-left: 333px" onclick="btn()" >  <img id="im"     src="/img/run.png" alt="" style="width: 40px"> </span>
+<canvas id="serial-port-data-chart" style=";padding-left:44px;padding-bottom: 30px;padding-right: 57px;padding-top: 20px;">
+  
+</canvas>
+
+
+  
 
 
 
 
 
-  @* video *@
 
 
-    <video id="video" autoplay></video>
+
+
+
+
+    @* <video id="video" autoplay></video>
     <button id="start" class="btn btn-success" style="width: 150px;">Start</button>
     <button id="stop" class="btn btn-danger" style="width: 150px;">Stop</button>
     <button id="capture" class="btn btn-warning" style="width: 150px;">Capture</button>
@@ -105,12 +121,12 @@
 <br>
 
     <canvas id="canvas" style="display: none;"></canvas>
-    <div class="carousel"></div>
+    <div class="carousel"></div> *@
 
     
 
 
-    @* video *@
+   
 
 </div>
 
@@ -127,7 +143,7 @@ var chart = new Chart(ctx, {
   data: {
     labels: [],
     datasets: [{
-      label: "Serial Port Data Read and write",
+     label:'' , 
       data: [],
       borderColor: "rgba(75, 192, 192, 1)",
       backgroundColor: "rgba(75, 192, 192, 0.2)"
@@ -156,7 +172,9 @@ connection.on("ReceiveData", function (data,data1,data2) {
     var parsedData = parseFloat(data);
     
     document.getElementById('puls').innerText=(data1);
+     document.getElementById('puls1').innerText=(data1);
      document.getElementById('so').innerText=(data2);
+       document.getElementById('so1').innerText=(data2);
 
     chart.data.labels.push("");
     chart.data.datasets[0].data.push(parsedData);
@@ -171,14 +189,31 @@ connection.on("ReceiveData", function (data,data1,data2) {
   }
 });
 
-document.getElementById("startBtn").addEventListener("click", function () {
+function btn(){
+
+
+if(document.getElementById('im').getAttribute('src')=='/img/run.png')
+{
   connection.start().then(function () {
-    $.post("/Home/StartReading");
-  });
-});
+      
+    
+        document.getElementById('im').src="/img/puse.png";
+        document.getElementById('g').src="/img/heart.gif";
+         document.getElementById('w').src="/img/wind.gif";
+      $.post("/Home/StartReading");
+    
+    });
+}else{
+    connection.stop().then(function () {});
+    document.getElementById('im').src="/img/run.png";
+    document.getElementById('g').src="/img/g.png";
+     document.getElementById('w').src="/img/wind.png";
+}
+  
+}
 
 document.getElementById("stopBtn").addEventListener("click", function () {
-  connection.stop().then(function () {});
+  
 });
 
 

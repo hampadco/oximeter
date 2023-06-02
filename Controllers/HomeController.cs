@@ -47,7 +47,7 @@ public class HomeController : Controller
     public async Task StartReading()
     {
         ///dev/ttyUSB0
-        using (SerialPort serialPort = new SerialPort("COM10"))
+        using (SerialPort serialPort = new SerialPort("/dev/ttyUSB0"))
         {
             serialPort.BaudRate = 19200;
             serialPort.Parity = Parity.Odd;
